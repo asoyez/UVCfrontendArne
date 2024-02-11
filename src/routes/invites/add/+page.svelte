@@ -1,5 +1,6 @@
 <script>
   import { writable } from "svelte/store";
+  import { goto } from "$app/navigation";
   import supabase from "$lib/supabase";
 
   const inviteForm = writable({
@@ -13,14 +14,18 @@
     event.preventDefault();
     const newInvite = $inviteForm;
     try {
-      const { data, error } = await supabase.from("invites").insert([newInvite]);
+      const { data, error } = await supabase
+        .from("invites")
+        .insert([newInvite]);
       if (error) {
         throw error;
       }
       console.log("Invite added successfully:", data);
+      setTimeout(() => {
+        goto("/invites");
+      }, 1000);
     } catch (error) {
       console.error("Error adding invite:", error.message);
-
 
       if (error.details) {
         console.error("Details:", error.details);
@@ -57,29 +62,16 @@
       </div>
       <div class="flex flex-col m-4">
         <label for="date">Date of dinner</label>
-        <input
-          type="date"
-          id="date"
-          bind:value={$inviteForm.date}
-          required
-        />
+        <input type="date" id="date" bind:value={$inviteForm.date} required />
       </div>
       <div class="flex flex-col m-4">
         <label for="cost">Cost of dinner</label>
-        <input
-          type="number"
-          id="cost"
-          bind:value={$inviteForm.cost}
-          required
-        />
+        <input type="number" id="cost" bind:value={$inviteForm.cost} required />
       </div>
-      <button
-        type="submit"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >Save new invite</button
-      >
+      <div class="flex justify-center">
+        <button type="submit" class="bg-blue-500  text-white font-bold py-2 px-4 rounded mx-2">Save invite</button>
+        <button type="" class="bg-red-500  text-white font-bold py-2 px-4 rounded mx-2"><a href="/invites">Cancel</a></button>
+      </div>
     </form>
-    <div class="flex flex-col content-center">
-    </div>
   </div>
 </main>

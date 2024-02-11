@@ -1,6 +1,6 @@
 <script>
-  import supabase from "$lib/supabase";
   import { readable } from "svelte/store";
+  import supabase from "$lib/supabase";
 
   const invites = readable([], (set) => {
     const fetchInvites = async () => {
@@ -19,23 +19,28 @@
   });
 </script>
 
-<main class="">
-  <div class="">
-    <h1 class="text-center">Invites</h1>
+<main>
+  <div class="m-4">
+    <h1 class="text-center font-bold text-3xl">Invites</h1>
   </div>
 
-  <div class="">
-    <button class=""><a href="/invites/add">Create invite</a></button>
+  <div class="grid justify-items-end m-4">
+    <button class="bg-green-700 py-2 px-4 rounded font-bold"
+      ><a href="/invites/add">Create invite</a></button
+    >
   </div>
 
-  
   {#each $invites as invite}
-    <div class="m-4 p-4 border border-gray-300 rounded">
+    <div class="m-4 px-4 py-2 border border-gray-300 rounded">
       <p>Name: {invite.dishName}</p>
       <p>Host: {invite.hostName}</p>
       <p>Date: {invite.date}</p>
       <p>Cost: {invite.cost}</p>
-      <button class="bg-green-400"><a href={`/invites/${invite.id}`}>Edit</a></button>
+      <div class="grid justify-end">
+        <button class="bg-blue-600 py-2 px-4 rounded"
+          ><a href={`/invites/${invite.id}`}>Edit</a></button
+        >
+      </div>
     </div>
   {/each}
 
